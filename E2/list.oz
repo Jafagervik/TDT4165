@@ -31,7 +31,6 @@ fun {Drop L Count}
                 {Drop L Count-1}
             end
         end
-
     end
 end
 
