@@ -3,25 +3,24 @@ fun {Lex Input}
 end
 
 fun {Tokenize Lexemes}
-    case Lexemes of nil then nil
-    [] Lexeme|Lexemes then
-        Token in
-            try
-                if Lexeme == "p" orelse Lexeme == "f" orelse Lexeme == "i" orelse Lexeme == "^" then
-                    % Command Token
-                    Token = cmd({String.toAtom Lexeme})
-                elseif Lexeme == "+" orelse Lexeme == "-" orelse Lexeme == "*" orelse Lexeme == "/" then
-                    % Operator Token
-                    Token = op({String.toAtom Lexeme})
-                else 
-                    % Integer token
-                    Token = int({String.toInt Lexeme})
-                end
-            catch _ then
-                raise tokenizer(lexeme:Lexeme) end
+    Commands = ["p" "f" "^" "i"]
+    Operators = ["+" "-" "*" "/"]
+in
+    {Map Lexemes
+        fun {$ Lexeme}
+            if {Member Lexeme Commands} then
+                cmd({String.toAtom Lexeme})
+            elseif {Member Lexeme Operators} then
+	            op({String.toAtom Lexeme})
+            else
+	        try 
+                int({String.toInt Lexeme})
+	        catch _ then 
+                raise "Non-valid lexeme '"#Lexeme#"'" 
             end
-        Token|{Tokenize Lexemes}
-    end
+	        end
+        end
+    end}
 end
 
 fun {Interpret Tokens}
@@ -56,17 +55,16 @@ end
 
 fun {InfixInternal Tokens ExpressionStack}
     case Tokens of nil then nil
-    [] _|Tokens then
+    [] op(Operator)|Tokens then 
         0
-    [] _|Tokens then 
-        1
+    [] int(Integer)|Tokens then 
+        
     end
 end
 
 fun {Infix Tokens}
     case Tokens of nil then nil
-    [] Token|Tokens then
-        {InfixInternal Tokens [1 2]}
+    
     end
 end
 
