@@ -1,0 +1,3 @@
+fun {GenStream}
+
+end
