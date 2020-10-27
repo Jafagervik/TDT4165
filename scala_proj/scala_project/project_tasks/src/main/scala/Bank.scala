@@ -7,12 +7,12 @@ class Bank(val allowedAttempts: Integer = 3) {
                               to: Account, 
                               amount: Double): 
                               Unit = {
-        val t = Transaction(transactionsQueue,
-                                      processedTransactions,
-                                      from,
-                                      to,
-                                      amount,
-                                      allowedAttempts)
+        val t = new Transaction(transactionsQueue,
+                                processedTransactions,
+                                from,
+                                to,
+                                amount,
+                                allowedAttempts)
         transactionsQueue push t
         val thread = new Thread {
             override def run() = processTransactions

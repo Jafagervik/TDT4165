@@ -1,5 +1,5 @@
 import exceptions._
-import scala.util.concurrent._
+import scala.concurrent._
 
 class Account(val bank: Bank, initialBalance: Double) {
 

@@ -1,6 +1,6 @@
 import exceptions._
 import scala.collection.mutable.{Queue}
-import scala.util.concurrent._
+import scala.concurrent._
 
 object TransactionStatus extends Enumeration {
   val SUCCESS, PENDING, FAILED = Value
@@ -39,6 +39,7 @@ class TransactionQueue {
         _collection synchronized {
             _collection head
         } 
+    }
 
     // Return an iterator to allow you to iterate over the queue
     def iterator: Iterator[Transaction] = {
@@ -88,7 +89,5 @@ class Transaction(val transactionsQueue: TransactionQueue,
           Thread.sleep(50) // you might want this to make more room for
                            // new transactions to be added to the queue
       }
-
-
     }
 }
